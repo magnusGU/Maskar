@@ -5,7 +5,6 @@ const map = new Map(800,600);
 var canvas = new Canvas(document.getElementById("map")); 
 
 function main() {
-    
     var b = new Bazooka();
     b.use(
         new Vector(100, 600), 
