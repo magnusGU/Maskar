@@ -8,7 +8,7 @@ function Projectile(_position, _direction, _speed, _mass) {
 
 Projectile.prototype.constructor = Projectile;
 
-Projectile.prototype.update = function() {
+Projectile.prototype.update = function(_draw) {
     //TODO: normalize direction and change speed
     var nextFrame = this.nextFrame();
 

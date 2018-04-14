@@ -1,5 +1,3 @@
-var canvas = new Canvas(document.getElementById("map")); 
-
 function Color (_r,_g,_b,_a) {
     this.data = [_r,_g,_b,_a];
     this.r = data[0];
@@ -32,6 +30,7 @@ Canvas.prototype.getColor = function (n) {
     case 1: return Color(255,0,0,255);
     case 2: return Color(0,0,255,255);
     case 3: return Color(0,255,0,255);
+    case 4: return Color(255,255,255,255);
     }
 
     return Color(255,0,0,255);
@@ -43,8 +42,8 @@ Canvas.prototype.show = function (map) {
 	for(row = 0; row < grid[0].length; row++) {
 	    var color = this.getColor(grid[col][grid[0].length - row]);
 	    this.image.data[col * 4 + row * grid.length*4] = color.r;
-            this.image.data[col * 4 + 1 + row * grid.length*4] = color.g;
-            this.image.data[col * 4 + 2 + row * grid.length*4] = color.b;
+        this.image.data[col * 4 + 1 + row * grid.length*4] = color.g;
+        this.image.data[col * 4 + 2 + row * grid.length*4] = color.b;
 	    this.image.data[col * 4 + 3 + row * grid.length*4] = color.a;
 	}
     }
