@@ -1,5 +1,6 @@
+const physics = new Physics();
+
 function main() {
-    console.log('Maskar');
 }
 
 main();
