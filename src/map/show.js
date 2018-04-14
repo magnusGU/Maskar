@@ -12,17 +12,17 @@ function Color (_r,_g,_b,_a) {
 function Canvas (_canvas) {
     this.canvas = _canvas;
     this.context = _canvas.getContext("2d");
-    this.pixel = new ImageData(1,1);    
+    this.image = this.context.createImageData(this.canvas.width, this.canvas.height);    
 }
 
 Canvas.prototype.constructor = Canvas;
 
 Canvas.prototype.putPixel = function (color, x, y) {
-    this.pixel.data[0] = color.r;
-    this.pixel.data[1] = color.g;
-    this.pixel.data[2] = color.b;
-    this.pixel.data[3] = color.a;
-    this.context.putImageData(this.pixel, x, this.canvas.height - y);
+    this.image.data[0] = color.r;
+    this.image.data[1] = color.g;
+    this.image.data[2] = color.b;
+    this.image.data[3] = color.a;
+    this.context.putImageData(this.id, x, this.canvas.height - y);
 };
 
 Canvas.prototype.getColor = function (n) {
@@ -34,17 +34,20 @@ Canvas.prototype.getColor = function (n) {
     case 3: return Color(0,255,0,255);
     }
 
-    return Color(0,0,0,0);
+    return Color(255,0,0,255);
 };
 
 Canvas.prototype.show = function (map) {
     var grid = map.grid;
-    
-    for (i = 0; i < grid.length; i++) {
-	for( j = 0; j < grid[i].length; j++) {
-	    this.putPixel(this.getColor(grid[i][j]), i, j);
-	}    
-    } 
-};
+    for (col = 0; col < grid.length; col++) {
+	for(row = 0; row < grid[0].length; row++) {
+	    var color = this.getColor(grid[col][grid[0].length - row]);
+	    this.image.data[col * 4 + row * grid.length*4] = color.r;
+            this.image.data[col * 4 + 1 + row * grid.length*4] = color.g;
+            this.image.data[col * 4 + 2 + row * grid.length*4] = color.b;
+	    this.image.data[col * 4 + 3 + row * grid.length*4] = color.a;
+	}
+    }
 
-canvas.putPixel(canvas.getColor(1), 100,100);
+    this.context.putImageData(this.image, 0, 0);
+};
