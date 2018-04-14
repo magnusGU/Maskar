@@ -10,7 +10,8 @@ function main() {
     console.log(b.use(new Vector(100, 600), new Vector(0,0)), 1.0, canvas.queuePixel);
     var p = new Player();
     p.worms[0].move(1);
-    console.log(p.worms[0].direction);
+    console.log("I Main");
+    p.update();
 }
 
 main(canvas);

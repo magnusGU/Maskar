@@ -31,6 +31,7 @@ Worm.prototype.shoot = function(){
 Worm.prototype.checkWorldMovement = function(_dir){
     //Check new position
     var newPos = map.grid[this.pos.x + _dir][this.pos.y];
+    console.log("newPos: " + newPos);
     switch(newPos){
         case 0:
             //valid move, check if falling
@@ -72,14 +73,20 @@ Worm.prototype.checkWorldMovement = function(_dir){
                 break;
             }
             break;
+        case 2:
+            //You are surrounded by water, die
+            this.health = 0;
+            this.status = statusEnum.dead;
         default:
             return;
     }
 }
 
 Worm.prototype.fallHandler = function(_dir){
+    console.log("Falling");
     //standing on ground or worm
-    if(map.grid[this.pos.x][this.pos.y-1] == 1 ||Map.grid[this.pos.x][this.pos.y-1] == 3){
+    var atPosUnder = map.grid[this.pos.x][this.pos.y-1];
+    if( atPosUnder == 1 ||atPosUnder == 3){
         return;
     }
     //standing on water, drowning
