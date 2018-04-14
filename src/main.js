@@ -1,3 +1,4 @@
+
 //Global variables
 const physics = new Physics();
 const map = new Map(800,600);
