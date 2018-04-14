@@ -10,7 +10,6 @@ function main() {
     //console.log(b.use(new Vector(100, 600), new Vector(0,0)));
     var p = new Player();
     p.worms[0].move(1);
-    console.log("I Main");
     p.update();
 }
 

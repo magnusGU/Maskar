@@ -31,7 +31,7 @@ Worm.prototype.shoot = function(){
 Worm.prototype.checkWorldMovement = function(_dir){
     //Check new position
     var newPos = map.grid[this.pos.x + _dir][this.pos.y];
-    console.log("newPos: " + newPos);
+    // console.log("newPos: " + newPos);
     switch(newPos){
         case 0:
             //valid move, check if falling
