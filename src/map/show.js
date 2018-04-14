@@ -23,14 +23,6 @@ function Canvas (_canvas) {
 
 Canvas.prototype.constructor = Canvas;
 
-Canvas.prototype.queuePixel = function (pos, n) {
-    this.pixels.push(() => this.drawPixel(this.getColor(n), pos.x, pos.y));
-}
-
-Canvas.prototype.queueSquare = function (pos, size, n) {
-    this.pixels.push(() => this.drawSquare(pos, size, n));
-}
-
 Canvas.prototype.getColor = function (n) {
     
     switch(n) {
@@ -43,36 +35,18 @@ Canvas.prototype.getColor = function (n) {
 
     return Color(255,0,0,255);
 };
-
-Canvas.prototype.show = function (map) {
-    this.clearCanvas();
-    this.drawMap(map);
-    this.drawQueue();
-    this.clearQueue();
-    this.renderCanvas();
-};
-
-Canvas.prototype.drawQueue = function () {
-    for (i = 0; i < this.pixels.length; i++) {
-	this.pixels[i]();
-    }
-}
-
-Canvas.prototype.clearQueue = function () {
-    this.pixels = [];
-}
     
 Canvas.prototype.drawMap = function (map) {
     var texture = map.grid;
     for (col = 0; col < texture.length; col++) {
 	for(row = 0; row < texture[0].length; row++) {
 	    var color = this.getColor(texture[col][row]);
-	    this.drawPixel(color, col, row);
+	    this.drawPixel(col, row, color);
 	}
     }
 }
 
-Canvas.prototype.drawPixel = function (color, x, y) {
+Canvas.prototype.drawPixel = function (x, y, color) {
     var i = x * 4;
     var j = (this.canvas.height - y - 1) * this.canvas.width * 4;
     this.image.data[i + j] = color.r;
@@ -84,13 +58,22 @@ Canvas.prototype.drawPixel = function (color, x, y) {
 Canvas.prototype.drawSquare = function (pos, size, n) {
     for(i = 0; i < size; i++) {
 	for(j = 0; j < size; j++){
-	    this.drawPixel(this.getColor(n), pos.x + i, pos.y + j);
+	    this.drawPixel(pos.x + i, pos.y + j, this.getColor(n));
 	}
     }
 }
 
-Canvas.prototype.drawCircle = function (pos, size, n) {
+Canvas.prototype.drawCircle = function (pos, radius, n) {
+    var startx = (pos.x - radius).clamp(0, pos.x + radius);
+    var starty = (pos.y - radius).clamp(0, pos.y + radius);
     
+    for(var i = startx; i < (startx + radius*2); i++){
+        for(var j = starty; j < (starty + radius*2); j++){
+            if(distance(i, j, pos.x, pos.y) < radius){
+                this.drawPixel(i, j, this.getColor(n));
+            }
+        }
+    }
 }
 
 Canvas.prototype.clearCanvas = function () {

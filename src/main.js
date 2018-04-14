@@ -3,7 +3,10 @@
 const physics = new Physics();
 const map = new Map(800,600);
 
+var entities = [];
 var canvas = new Canvas(document.getElementById("map")); 
+
+console.log(canvas);
 
 function main() {
     var b = new Bazooka();
@@ -13,15 +16,21 @@ function main() {
         new Vector(0,0), 
         1.0
     );
+
     
-    setInterval(() => game(proj), 1000);
+    entities.push(proj);
+    
+    setInterval(() => game(), 1000);
 }
 
-function game(proj) {
-    canvas.show(map);
-    proj.update((pos, size = 10) => canvas.queueSquare(pos.sub(new Vector(size/2,size/2)), size, 4));
-    console.log(proj.position.y);
-    //console.log("hej");
+function game() {
+    canvas.clearCanvas();
+    canvas.drawMap(map);
+    for(i = 0; i < entities.length; i++) {
+	entities[i].update();
+	entities[i].draw(canvas);
+    }
+    canvas.renderCanvas();
 }
 
-main(canvas);
+main();
