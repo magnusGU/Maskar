@@ -24,11 +24,11 @@ function Canvas (_canvas) {
 Canvas.prototype.constructor = Canvas;
 
 Canvas.prototype.queuePixel = function (pos, n) {
-    this.pixels.push(() => this.loadPixel(this.getColor(n), pos.x, pos.y));
+    this.pixels.push(() => this.drawPixel(this.getColor(n), pos.x, pos.y));
 }
 
 Canvas.prototype.queueSquare = function (pos, size, n) {
-    this.pixels.push(() => this.loadSquare(pos, size, n));
+    this.pixels.push(() => this.drawSquare(pos, size, n));
 }
 
 Canvas.prototype.getColor = function (n) {
@@ -46,13 +46,13 @@ Canvas.prototype.getColor = function (n) {
 
 Canvas.prototype.show = function (map) {
     this.clearCanvas();
-    this.loadMap(map);
-    this.loadQueue();
+    this.drawMap(map);
+    this.drawQueue();
     this.clearQueue();
-    this.drawCanvas();
+    this.renderCanvas();
 };
 
-Canvas.prototype.loadQueue = function () {
+Canvas.prototype.drawQueue = function () {
     for (i = 0; i < this.pixels.length; i++) {
 	this.pixels[i]();
     }
@@ -62,17 +62,17 @@ Canvas.prototype.clearQueue = function () {
     this.pixels = [];
 }
     
-Canvas.prototype.loadMap = function (map) {
+Canvas.prototype.drawMap = function (map) {
     var texture = map.grid;
     for (col = 0; col < texture.length; col++) {
 	for(row = 0; row < texture[0].length; row++) {
 	    var color = this.getColor(texture[col][row]);
-	    this.loadPixel(color, col, row);
+	    this.drawPixel(color, col, row);
 	}
     }
 }
 
-Canvas.prototype.loadPixel = function (color, x, y) {
+Canvas.prototype.drawPixel = function (color, x, y) {
     var i = x * 4;
     var j = (this.canvas.height - y - 1) * this.canvas.width * 4;
     this.image.data[i + j] = color.r;
@@ -81,15 +81,15 @@ Canvas.prototype.loadPixel = function (color, x, y) {
     this.image.data[3 + i + j] = color.a;
 }
 
-Canvas.prototype.loadSquare = function (pos, size, n) {
+Canvas.prototype.drawSquare = function (pos, size, n) {
     for(i = 0; i < size; i++) {
 	for(j = 0; j < size; j++){
-	    this.loadPixel(this.getColor(n), pos.x + i, pos.y + j);
+	    this.drawPixel(this.getColor(n), pos.x + i, pos.y + j);
 	}
     }
 }
 
-Canvas.prototype.loadCircle = function (pos, size, n) {
+Canvas.prototype.drawCircle = function (pos, size, n) {
     
 }
 
@@ -97,7 +97,7 @@ Canvas.prototype.clearCanvas = function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
 
-Canvas.prototype.drawCanvas = function() {
+Canvas.prototype.renderCanvas = function() {
     this.context.putImageData(this.image, 0, 0);
 }
 
