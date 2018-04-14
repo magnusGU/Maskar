@@ -29,7 +29,11 @@ class Map {
         }
     }
     fillCircleGrid(centerx,centery,radius,value){
-        
+        startx = centerx - radius;
+        if(startx < 0)
+            startx = 0;
+        if(startx > this.sizex)
+            startx = this.sizex;
     }
 }
 var m = new Map(800,600);
