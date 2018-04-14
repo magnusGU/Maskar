@@ -50,11 +50,13 @@ Canvas.prototype.show = function (map) {
 Canvas.prototype.loadPixels = function () {
     for (i = 0; i < this.pixels.length; i++) {
 	var pos = this.pixels[i].pos;
+	var i = pos.x * 4;
+	var j = (this.canvas.height - pos.y) * this.canvas.height * 4;
 	var color = this.pixels[i].color;
-	this.image.data[pos.x * 4 + pos.y * this.canvas.height * 4] = color.r;
-	this.image.data[pos.x * 4 + 1 + pos.y * this.canvas.height * 4] = color.g;
-	this.image.data[pos.x * 4 + 2 + pos.y * this.canvas.height * 4] = color.b;
-	this.image.data[pos.x * 4 + 3 + pos.y * this.canvas.height * 4] = color.a;
+	this.image.data[i + j] = color.r;
+	this.image.data[1 + i + j] = color.g;
+	this.image.data[2 + i + j] = color.b;
+	this.image.data[3 + i + j] = color.a;
     }
 }
 
@@ -67,10 +69,12 @@ Canvas.prototype.loadMap = function (map) {
     for (col = 0; col < texture.length; col++) {
 	for(row = 0; row < texture[0].length; row++) {
 	    var color = this.getColor(texture[col][texture[0].length - row]);
-	    this.image.data[col * 4 + row * texture.length * 4] = color.r;
-            this.image.data[col * 4 + 1 + row * texture.length * 4] = color.g;
-            this.image.data[col * 4 + 2 + row * texture.length * 4] = color.b;
-	    this.image.data[col * 4 + 3 + row * texture.length * 4] = color.a;
+	    var i = col * 4;
+	    var j = row * texture.length * 4;
+	    this.image.data[i + j] = color.r;
+            this.image.data[1 + i + j] = color.g;
+            this.image.data[2 + i + j] = color.b;
+	    this.image.data[3 + i + j] = color.a;
 	}
     }
 }
