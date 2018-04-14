@@ -40,10 +40,11 @@ Canvas.prototype.getColor = function (n) {
 };
 
 Canvas.prototype.show = function (map) {
-    clear();
+    clearCanvas();
     loadMap(map);
     loadPixels();
-    draw();
+    resetQueue();
+    drawCanvas();
 };
 
 Canvas.prototype.loadPixels = function () {
@@ -55,6 +56,10 @@ Canvas.prototype.loadPixels = function () {
 	this.image.data[pos.x * 4 + 2 + pos.y * this.canvas.height * 4] = color.b;
 	this.image.data[pos.x * 4 + 3 + pos.y * this.canvas.height * 4] = color.a;
     }
+}
+
+Canvas.prototype.resetQueue = function () {
+    pixels = [];
 }
     
 Canvas.prototype.loadMap = function (map) {
@@ -70,12 +75,11 @@ Canvas.prototype.loadMap = function (map) {
     }
 }
 
-Canvas.prototype.clear = function () {
+Canvas.prototype.clearCanvas = function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.pixels = [];
 }
 
-Canvas.prototype.draw = function() {
+Canvas.prototype.drawCanvas = function() {
     this.context.putImageData(this.image, 0, 0);
 }
 
