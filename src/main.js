@@ -1,6 +1,6 @@
-const physics = new Physics();
-
-function main() {
+function main(canvas) {
+    var map = new Map(800,600);
+    canvas.show(map);
 }
 
-main();
+main(canvas);
