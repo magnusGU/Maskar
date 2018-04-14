@@ -12,5 +12,13 @@ Vector.prototype = {
 
     sub: function(other) {
         return new Vector(this.x - other.x, this.y - other.y);
+    },
+
+    scale: function(n) {
+        return new Vector(this.x * n, this.y * n);
+    },
+
+    floor: function() {
+        return new Vector(Math.floor(this.x), Math.floor(this.y));
     }
 }
