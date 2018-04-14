@@ -10,17 +10,80 @@ class Map {
             }
         }
         if(this.sizex == 800 && this.sizey == 600) {
-            this.simpleMap();
+            this.mazeMap();
         }
             
     }
 
     //Made for 800x600 map
     simpleMap() {
-       // this.fillRecGrid(100,0,700,300,1);
-        this.generateTerrain(0,800,2);
+        this.fillRecGrid(100,0,700,300,1);
+        //this.generateTerrain(0,800,2);
         this.fillRecGrid(0,0,800,50,2);
         this.fillCircleGrid(400,300,50,0);
+    }
+    //Made for 800x600 map
+    mazeMap(){
+        this.fillRecGrid(0,0,800,50,1);
+        this.fillRecGrid(0,0,50,600,1);
+        this.fillRecGrid(0,550,800,600,1);
+        this.fillRecGrid(750,0,800,600,1);
+        var maze = new Array(14);
+        var stack = new Array();
+        for(var i = 0; i < 14; i++){
+            maze[i] = new Array(10);
+            for(var j = 0; j < 10; j++){
+                maze[i][j] = {v:false,right:true,above:true,x:i,y:j};
+                stack.push(maze[i][j]);
+            }
+        }
+        var current = stack.pop();
+        current.v = true;
+        while(stack.length > 0){
+            var unvisited = new Array();
+            if(current.x > 0 && !maze[current.x-1][current.y].v){
+                unvisited.push(maze[current.x-1][current.y]);
+            }
+            if(current.x < (maze.length-1) && !maze[current.x+1][current.y].v){
+                unvisited.push(maze[current.x+1][current.y]);
+            }
+            if(current.y > 0 && !maze[current.x][current.y-1].v){
+                unvisited.push(maze[current.x][current.y-1]);
+            }
+            if(current.y < (maze[current.x].length-1) && !maze[current.x][current.y+1].v){
+                unvisited.push(maze[current.x][current.y+1]);
+            }
+            if(unvisited.length > 0){
+                var tmp = unvisited[Math.floor(Math.random()*unvisited.length)];
+                if(tmp.x < current.x){
+                    tmp.right = false;
+                } else if(tmp.x > current.x){
+                    current.right = false;
+                }
+                else if(tmp.y < current.y) {
+                    tmp.above = false;
+                } else{
+                    current.above = false;
+                }
+                stack.push(current);
+                current = tmp;
+                current.v = true;
+            } else{
+                current = stack.pop();
+                current.v = true;
+            }
+        }
+        for(var i = 0; i < maze.length;i++){
+            for(var j = 0; j < maze[i].length; j++){
+                if(maze[i][j].right){
+                    this.fillRecGrid(95+50*i,50+50*j,105+50*i,50+50*(j+1),1);
+                }
+                if(maze[i][j].above){
+                    this.fillRecGrid(50+50*i,95+50*j,50+50*(i+1),105+50*(j),1);
+                }
+            }
+        }
+        
     }
 
     fillRecGrid(minx,miny,maxx,maxy,value){
@@ -63,7 +126,7 @@ class Map {
         var mul = 1;
         for(var i = 0; i < this.sizex;i++){
 
-            for(var j = 0; j < terrain[i] + ((Math.sin(i/500.0)+1)/2)*200; j++){
+            for(var j = 0; j < terrain[i] + ((Math.sin(i/250.0)+1)/2)*100; j++){
                 this.grid[i][j] = 1;
             }
         }
