@@ -1,32 +1,40 @@
-var canvas = new Canvas(document.getElementById("map").getContext("2d")); 
+var canvas = new Canvas(document.getElementById("map")); 
 
-function Canvas (_context) {
-    this.context = _context;
-    this.pixel = this.context.createImageData(1,1);
+function Color (_r,_g,_b,_a) {
+    this.data = [_r,_g,_b,_a];
+    this.r = data[0];
+    this.g = data[1];
+    this.b = data[2];
+    this.a = data[3];
+    return this;
+}
 
-    
+function Canvas (_canvas) {
+    this.canvas = _canvas;
+    this.context = _canvas.getContext("2d");
+    this.pixel = new ImageData(1,1);    
 }
 
 Canvas.prototype.constructor = Canvas;
 
-Canvas.prototype.colorPixel = function (color) {
-    this.pixel.data = color;
-};
-
-Canvas.prototype.putPixel = function (pos) {
-    this.context.putImageData(this.pixel, pos.x, pos.y);
+Canvas.prototype.putPixel = function (color, x, y) {
+    this.pixel.data[0] = color.r;
+    this.pixel.data[1] = color.g;
+    this.pixel.data[2] = color.b;
+    this.pixel.data[3] = color.a;
+    this.context.putImageData(this.pixel, x, this.canvas.height - y);
 };
 
 Canvas.prototype.getColor = function (n) {
     
     switch(n) {
-    case 0: return [1,1,1,1];
-    case 1: return [1,0,0,1];
-    case 2: return [0,0,1,1];
-    case 3: return [0,1,0,1];
+    case 0: return Color(255,255,255,255);
+    case 1: return Color(255,0,0,255);
+    case 2: return Color(0,0,255,255);
+    case 3: return Color(0,255,0,255);
     }
 
-    return [0,0,0,1];
+    return Color(0,0,0,0);
 };
 
 Canvas.prototype.show = function (map) {
@@ -34,8 +42,9 @@ Canvas.prototype.show = function (map) {
     
     for (i = 0; i < grid.length; i++) {
 	for( j = 0; j < grid[i].length; j++) {
-	    this.colorPixel(this.getColor(grid[i][j]));
-	    this.putPixel(i, j);
+	    this.putPixel(this.getColor(grid[i][j]), i, j);
 	}    
     } 
 };
+
+canvas.putPixel(canvas.getColor(1), 100,100);
