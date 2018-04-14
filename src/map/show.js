@@ -74,7 +74,7 @@ Canvas.prototype.loadMap = function (map) {
 
 Canvas.prototype.loadPixel = function (color, x, y) {
     var i = x * 4;
-    var j = (this.canvas.height - y) * this.canvas.width * 4;
+    var j = (this.canvas.height - y - 1) * this.canvas.width * 4;
     this.image.data[i + j] = color.r;
     this.image.data[1 + i + j] = color.g;
     this.image.data[2 + i + j] = color.b;

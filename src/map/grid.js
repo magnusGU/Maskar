@@ -105,20 +105,12 @@ class Map {
     }
     
     fillCircleGrid(centerx,centery,radius,value){
-        var startx = centerx - radius;
-        var starty = centery - radius; 
-        if(startx < 0)
-            startx = 0;
-        else if((centerx + radius) > this.sizex)
-            startx = this.sizex;
-        if(starty < 0)
-            starty = 0;
-        else if((centery + radius) > this.sizey)
-            starty = this.sizey;
+        var startx = (centerx - radius).clamp(0, centerx + radius);
+        var starty = (centery - radius).clamp(0, centery + radius);
 
         for(var i = startx; i < (startx + radius*2); i++){
             for(var j = starty; j < (starty + radius*2); j++){
-                if(Math.sqrt(Math.pow(Math.abs(i - centerx),2) + Math.pow(Math.abs(j - centery),2)) < radius){
+                if(distance(i, j, centerx, centery) < radius){
                     this.grid[i][j] = value;
                 }
             }
