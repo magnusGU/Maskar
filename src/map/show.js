@@ -1,4 +1,4 @@
-var canvas = new Canvas(document.getElementById("map").element.getContext("2d")); 
+var canvas = new Canvas(document.getElementById("map").getContext("2d")); 
 
 function Canvas (_context) {
     this.context = _context;
@@ -6,6 +6,8 @@ function Canvas (_context) {
 
     
 }
+
+Canvas.prototype.constructor = Canvas;
 
 Canvas.prototype.colorPixel = function (color) {
     this.pixel.data = color;

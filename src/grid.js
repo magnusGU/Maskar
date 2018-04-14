@@ -49,5 +49,4 @@ class Map {
         }
     }
 }
-var m = new Map(800,600);
-console.log(m.grid[300][100]);
+//var m = new Map(800,600);
