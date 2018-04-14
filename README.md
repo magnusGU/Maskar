@@ -1,20 +1,20 @@
 # Maskar
 AI battle in worms
 ----------
-Generera karta
+# Generera karta
 - Vatten 
 - Mark
 - Förstörbart
 - g= 9.82
 - Vind
-Vapen
+# Vapen
 - Knuff
 - Bazooka
     - Charge-up time
     - riktning
-Mask
+# Mask
 - Rörelse
 - Attack
 - Dö
-Spel
+# Spel
 - Vem vinner, vem förlorar
