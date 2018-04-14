@@ -1,5 +1,8 @@
+//Global variables
 const physics = new Physics();
 const map = new Map(800,600);
+
+var canvas = new Canvas(document.getElementById("map")); 
 
 function main() {
     canvas.show(map);
@@ -11,4 +14,4 @@ function main() {
     p.update();
 }
 
-main();
+main(canvas);
