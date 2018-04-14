@@ -29,11 +29,24 @@ class Map {
         }
     }
     fillCircleGrid(centerx,centery,radius,value){
-        startx = centerx - radius;
+        var startx = centerx - radius;
+        var starty = centery - radius; 
         if(startx < 0)
             startx = 0;
-        if(startx > this.sizex)
+        else if((centerx + radius) > this.sizex)
             startx = this.sizex;
+        if(starty < 0)
+            starty = 0;
+        else if((centery + radius) > this.sizey)
+            starty = this.sizey;
+
+        for(var i = startx; i < (startx + radius*2); i++){
+            for(var j = starty; j < (starty + radius*2); j++){
+                if(Math.sqrt(Math.abs(i - centerx) + Math.abs(j - centery)) < radius){
+                    this.grid[i][j] = value;
+                }
+            }
+        }
     }
 }
 var m = new Map(800,600);
