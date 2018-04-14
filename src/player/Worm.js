@@ -1,10 +1,10 @@
 var DirEnum = Object.freeze({"right":1, "left":-1});
 var statusEnum = Object.freeze({"dead":0, "alive":1})
 
-function Worm(_x, _y, _weapon){
+function Worm(_x, _y, _health, _weapon){
     this.direction = DirEnum.right;
     this.pos = new Vector(_x,_y);
-    this.Health = 100;
+    this.health = _health || 100;
     this.status = statusEnum.alive;
     this.weapon = _weapon;
 }
@@ -99,7 +99,10 @@ Worm.prototype.fallHandler = function(_dir){
     var startPos = new Vector(this.pos.x,this.pos.y);
 
     while(map.grid[this.pos.x][this.pos.y-1] == 0){
-        this.pos.y -= physics.gravity;
+        //fall according to gravity, but remember that the while condition requires ints, not floats
+        //this.pos.y += physics.gravity.y;
+        this.pos.y -= 1;
+
     }
 
     //Hit water, die
@@ -111,6 +114,7 @@ Worm.prototype.fallHandler = function(_dir){
 
     //falldamage based on length of fall, 1 damage for every 4 pixels
     if(startPos.y < this.pos.y+4){
+        console.log("No falldamage");
         return;
     }else{
         var damage = startPos.y - this.pos.y;
