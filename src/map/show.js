@@ -48,9 +48,9 @@ Canvas.prototype.show = function (map) {
 };
 
 Canvas.prototype.loadPixels = function () {
-    for (i = 0; i < pixels.length; i++) {
-	var pos = pixels[i].pos;
-	var color = pixels[i].color;
+    for (i = 0; i < this.pixels.length; i++) {
+	var pos = this.pixels[i].pos;
+	var color = this.pixels[i].color;
 	this.image.data[pos.x * 4 + pos.y * this.canvas.height * 4] = color.r;
 	this.image.data[pos.x * 4 + 1 + pos.y * this.canvas.height * 4] = color.g;
 	this.image.data[pos.x * 4 + 2 + pos.y * this.canvas.height * 4] = color.b;
