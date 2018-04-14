@@ -12,7 +12,7 @@ Bazooka.prototype.use = function(_position, _direction, _power, _draw) {
     
     var hit = projectile.hit();
     while(!hit.hit) {
-        projectile.update(_draw);
+        projectile.update((pos) => _draw(pos));
         hit = projectile.hit();
     }
 

@@ -24,6 +24,7 @@ Canvas.prototype.constructor = Canvas;
 
 Canvas.prototype.queuePixel = function (pos, n) {
     this.pixels.push(Pixel(pos, this.getColor(n)));
+    canvas.show(map);
 }
 
 Canvas.prototype.getColor = function (n) {
@@ -33,7 +34,7 @@ Canvas.prototype.getColor = function (n) {
     case 1: return Color(255,0,0,255);
     case 2: return Color(0,0,255,255);
     case 3: return Color(0,255,0,255);
-    case 4: return Color(255,255,255,255);
+    case 4: return Color(0,0,0,255);
     }
 
     return Color(255,0,0,255);
