@@ -15,6 +15,7 @@ Projectile.prototype.update = function(_draw) {
     this.direction = nextFrame.direction;
 
     this.position = this.position.add(this.direction.floor());
+    _draw(this.position, 4);
     
     return this.position;
 }
