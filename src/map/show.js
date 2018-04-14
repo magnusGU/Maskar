@@ -1,6 +1,7 @@
 function Pixel (_pos, _color) {
     this.pos = _pos;
     this.color = _color;
+    return this;
 }
 
 function Color (_r,_g,_b,_a) {
@@ -23,8 +24,11 @@ function Canvas (_canvas) {
 Canvas.prototype.constructor = Canvas;
 
 Canvas.prototype.queuePixel = function (pos, n) {
-    this.pixels.push(Pixel(pos, this.getColor(n)));
-    canvas.show(map);
+    this.pixels.push(() => this.loadPixel(this.getColor(n), pos.x, pos.y));
+}
+
+Canvas.prototype.queueSquare = function (pos, size, n) {
+    this.pixels.push(() => this.loadSquare(pos, size, n));
 }
 
 Canvas.prototype.getColor = function (n) {
@@ -34,7 +38,7 @@ Canvas.prototype.getColor = function (n) {
     case 1: return Color(255,0,0,255);
     case 2: return Color(0,0,255,255);
     case 3: return Color(0,255,0,255);
-    case 4: return Color(0,0,0,255);
+    case 4: return Color(0,255,0,255);
     }
 
     return Color(255,0,0,255);
@@ -43,25 +47,18 @@ Canvas.prototype.getColor = function (n) {
 Canvas.prototype.show = function (map) {
     this.clearCanvas();
     this.loadMap(map);
-    this.loadPixels();
-    this.resetQueue();
+    this.loadQueue();
+    this.clearQueue();
     this.drawCanvas();
 };
 
-Canvas.prototype.loadPixels = function () {
+Canvas.prototype.loadQueue = function () {
     for (i = 0; i < this.pixels.length; i++) {
-	var pos = this.pixels[i].pos;
-	var i = pos.x * 4;
-	var j = (this.canvas.height - pos.y) * this.canvas.height * 4;
-	var color = this.pixels[i].color;
-	this.image.data[i + j] = color.r;
-	this.image.data[1 + i + j] = color.g;
-	this.image.data[2 + i + j] = color.b;
-	this.image.data[3 + i + j] = color.a;
+	this.pixels[i]();
     }
 }
 
-Canvas.prototype.resetQueue = function () {
+Canvas.prototype.clearQueue = function () {
     this.pixels = [];
 }
     
@@ -69,13 +66,25 @@ Canvas.prototype.loadMap = function (map) {
     var texture = map.grid;
     for (col = 0; col < texture.length; col++) {
 	for(row = 0; row < texture[0].length; row++) {
-	    var color = this.getColor(texture[col][texture[0].length - row]);
-	    var i = col * 4;
-	    var j = row * texture.length * 4;
-	    this.image.data[i + j] = color.r;
-            this.image.data[1 + i + j] = color.g;
-            this.image.data[2 + i + j] = color.b;
-	    this.image.data[3 + i + j] = color.a;
+	    var color = this.getColor(texture[col][row]);
+	    this.loadPixel(color, col, row);
+	}
+    }
+}
+
+Canvas.prototype.loadPixel = function (color, x, y) {
+    var i = x * 4;
+    var j = (this.canvas.height - y) * this.canvas.width * 4;
+    this.image.data[i + j] = color.r;
+    this.image.data[1 + i + j] = color.g;
+    this.image.data[2 + i + j] = color.b;
+    this.image.data[3 + i + j] = color.a;
+}
+
+Canvas.prototype.loadSquare = function (pos, size, n) {
+    for(i = 0; i < size; i++) {
+	for(j = 0; j < size; j++){
+	    this.loadPixel(this.getColor(n), pos.x + i, pos.y + j);
 	}
     }
 }
