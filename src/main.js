@@ -7,21 +7,21 @@ var canvas = new Canvas(document.getElementById("map"));
 
 function main() {
     var b = new Bazooka();
-    b.use(
+
+    var proj = b.use(
         new Vector(100, 600), 
         new Vector(0,0), 
-        1.0, 
-        (pos) => canvas.queuePixel(pos, 4)
+        1.0
     );
-    var p = new Player();
-    p.worms[0].move(1);
-    console.log("I Main");
-    p.update();
-    setInterval(game(), 100);
+    
+    setInterval(() => game(proj), 1000);
 }
 
-function game() {
+function game(proj) {
     canvas.show(map);
+    proj.update((pos, size = 10) => canvas.queueSquare(pos.sub(new Vector(size/2,size/2)), size, 4));
+    console.log(proj.position.y);
+    //console.log("hej");
 }
 
 main(canvas);
