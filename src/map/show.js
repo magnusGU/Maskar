@@ -1,5 +1,3 @@
-var canvas = new Canvas(document.getElementById("map")); 
-
 function Pixel (_pos, _color) {
     this.pos = _pos;
     this.color = _color;
