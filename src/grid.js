@@ -23,16 +23,20 @@ class Map {
         this.fillCircleGrid(400,300,50,0);
     }
     //Made for 800x600 map
-    mazeMap(){
+    mazeMap(param){
         this.fillRecGrid(0,0,800,50,1);
         this.fillRecGrid(0,0,50,600,1);
         this.fillRecGrid(0,550,800,600,1);
         this.fillRecGrid(750,0,800,600,1);
-        var maze = new Array(14);
+
+        var xgrid = 14*2;
+        var ygrid = 10*2;
+
+        var maze = new Array(xgrid);
         var stack = new Array();
-        for(var i = 0; i < 14; i++){
-            maze[i] = new Array(10);
-            for(var j = 0; j < 10; j++){
+        for(var i = 0; i < xgrid; i++){
+            maze[i] = new Array(ygrid);
+            for(var j = 0; j < ygrid; j++){
                 maze[i][j] = {v:false,right:true,above:true,x:i,y:j};
                 stack.push(maze[i][j]);
             }
@@ -73,17 +77,23 @@ class Map {
                 current.v = true;
             }
         }
+        var offset = 50;
+        var width = (800 - offset*2) / xgrid;
+        var height = (600 - offset*2) / ygrid;
+        var thickness = 2;
+  
+
         for(var i = 0; i < maze.length;i++){
+            var waterlevel = Math.sin(i)*Math.sin(i) * 100;
             for(var j = 0; j < maze[i].length; j++){
                 if(maze[i][j].right){
-                    this.fillRecGrid(95+50*i,50+50*j,105+50*i,50+50*(j+1),1);
+                    this.fillRecGrid((offset+width-thickness)+width*i,offset+height*j,(offset+width+thickness)+width*i,offset+height*(j+1),1);
                 }
                 if(maze[i][j].above){
-                    this.fillRecGrid(50+50*i,95+50*j,50+50*(i+1),105+50*(j),1);
+                    this.fillRecGrid(offset+width*i,(offset+height-thickness)+height*j,offset+width*(i+1),(offset+height+thickness)+height*j,1);
                 }
             }
         }
-        
     }
 
     fillRecGrid(minx,miny,maxx,maxy,value){
