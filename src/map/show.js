@@ -89,6 +89,10 @@ Canvas.prototype.loadSquare = function (pos, size, n) {
     }
 }
 
+Canvas.prototype.loadCircle = function (pos, size, n) {
+    
+}
+
 Canvas.prototype.clearCanvas = function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 }
