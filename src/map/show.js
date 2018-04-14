@@ -40,11 +40,11 @@ Canvas.prototype.getColor = function (n) {
 };
 
 Canvas.prototype.show = function (map) {
-    clearCanvas();
-    loadMap(map);
-    loadPixels();
-    resetQueue();
-    drawCanvas();
+    this.clearCanvas();
+    this.loadMap(map);
+    this.loadPixels();
+    this.resetQueue();
+    this.drawCanvas();
 };
 
 Canvas.prototype.loadPixels = function () {
@@ -59,7 +59,7 @@ Canvas.prototype.loadPixels = function () {
 }
 
 Canvas.prototype.resetQueue = function () {
-    pixels = [];
+    this.pixels = [];
 }
     
 Canvas.prototype.loadMap = function (map) {
